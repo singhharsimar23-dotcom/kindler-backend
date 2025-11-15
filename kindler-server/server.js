@@ -16,7 +16,7 @@ app.use(express.json());
 // 2. Database Connection (THIS IS TEMPORARY)
 // NOTE: You will replace 'mongodb://localhost:27017/kindlerDB' 
 //       with a real connection string from MongoDB Atlas later.
-const DB_URI = 'mongodb://localhost:27017/kindlerDB'; 
+const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/kindlerDB';
 
 mongoose.connect(DB_URI)
     .then(() => console.log('MongoDB connection successful.'))
