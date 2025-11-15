@@ -5,7 +5,7 @@ import ProjectCard from './components/ProjectCard';
 import ProjectForm from './components/ProjectForm';
 import './App.css'; 
 
-const API_URL = 'http://localhost:5000/api/projects'; // Define API URL
+const API_URL = 'https://kindler-gl2q.onrender.com/api/projects'; // Define API URL
 
 function App() {
     // 1. STATE: Updated to manage loading state and errors
