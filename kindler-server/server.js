@@ -1,5 +1,3 @@
-// kindler-server/server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -8,14 +6,21 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000; // The backend will run on port 5000
 
-// Middleware: Allows React frontend to talk to this server
-app.use(cors()); 
+// ======================================================================
+// ⚠️ CORS FIX: ALLOWING YOUR VERCEL FRONTEND
+// This is the fix to allow 'https://kindler.vercel.app' to connect to Render
+// ======================================================================
+app.use(cors({
+    origin: 'https://kindler.vercel.app', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+})); 
+
 // Middleware: Allows the app to read JSON data from the body of POST/PUT requests
 app.use(express.json()); 
 
-// 2. Database Connection (THIS IS TEMPORARY)
-// NOTE: You will replace 'mongodb://localhost:27017/kindlerDB' 
-//       with a real connection string from MongoDB Atlas later.
+// 2. Database Connection
+// Now using the DB_URI from Render's Environment Variables (process.env)
 const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/kindlerDB';
 
 mongoose.connect(DB_URI)
@@ -24,14 +29,12 @@ mongoose.connect(DB_URI)
 
 
 // 3. Define a Simple Project Schema (Model)
-// This tells MongoDB what a Project document looks like
 const ProjectSchema = new mongoose.Schema({
     title: { type: String, required: true },
     owner: { type: String, default: 'Kindler User' },
     skillsNeeded: [String],
     goal: String,
     description: String,
-    // In a real app, we'd add fields for swiping/matching here
 });
 
 const Project = mongoose.model('Project', ProjectSchema);
